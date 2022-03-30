@@ -25,5 +25,10 @@ int main()
 
 	filePath = setFilePath(getCurrentProjectPath(), fileName);
 	ofstream fileStream(filePath);
+
+	if (fileStream)
+		cout << "Update file" << endl;
+	else
+		cout << "Handle errors" << endl;
 }
 
