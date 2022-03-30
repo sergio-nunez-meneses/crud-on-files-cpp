@@ -30,5 +30,7 @@ int main()
 		cout << "Update file" << endl;
 	else
 		cout << "Handle errors" << endl;
+
+	return 0;
 }
 
