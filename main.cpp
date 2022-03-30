@@ -1,5 +1,6 @@
 #include <iostream>
 #include <filesystem>
+#include <fstream>
 
 using namespace std;
 
@@ -9,11 +10,12 @@ int main()
 {
 	cout << "We're about to create a very simple text file, enter its name:" << endl;
 
-	string filename, projectPath, fullPath;
+	const string projectPath = fs::current_path().parent_path().string();
+	string fullPath, filename;
+
 	getline(cin, filename);
 
-	projectPath = fs::current_path().parent_path().string();
 	fullPath = projectPath + "/" + filename + ".txt";
-	cout << fullPath << endl;
+	ofstream fileStream(fullPath);
 }
 
