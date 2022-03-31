@@ -23,7 +23,13 @@ int main()
 	string filePath, fileName;
 	getline(cin, fileName);
 
-	filePath = setFilePath(getCurrentProjectPath(), fileName);
+	string cwd = getCurrentProjectPath();
+	string fileDirPath = cwd + "/created-files";
+
+	if (!fs::is_directory(fileDirPath))
+		fs::create_directory(fileDirPath);
+
+	filePath = setFilePath(fileDirPath, fileName);
 	ofstream fileStream(filePath);
 
 	if (fileStream)
