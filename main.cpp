@@ -33,7 +33,21 @@ int main()
 	ofstream fileStream(filePath, ios::app);
 
 	if (fileStream)
-		cout << "Update file" << endl;
+	{
+		cout << "Our file " << fileName << ".txt has been created! Now, let's add some content to it." << endl;
+		cout << "Type whatever you want, and press enter to save and continue." << endl;
+		cout << "When you're finish, type exit and press enter." << endl;
+
+		string content;
+
+		while (getline(cin, content))
+		{
+			if (content != "exit")
+				fileStream << content << endl;
+			else
+				break;
+		}
+	}
 	else
 		cout << "Handle errors" << endl;
 
