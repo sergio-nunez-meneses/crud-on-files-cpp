@@ -30,7 +30,7 @@ int main()
 		fs::create_directory(fileDirPath);
 
 	filePath = setFilePath(fileDirPath, fileName);
-	ofstream fileStream(filePath);
+	ofstream fileStream(filePath, ios::app);
 
 	if (fileStream)
 		cout << "Update file" << endl;
