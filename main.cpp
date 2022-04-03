@@ -18,38 +18,28 @@ string setFilePath(const string &path, const string &file)
 
 int main()
 {
-	cout << "We're about to create a very simple text file, enter its name:" << endl;
-
-	string filePath, fileName;
-	getline(cin, fileName);
-
 	string cwd = getCurrentProjectPath();
 	string fileDirPath = cwd + "/created-files";
+	fstream file;
 
 	if (!fs::is_directory(fileDirPath))
 		fs::create_directory(fileDirPath);
 
-	filePath = setFilePath(fileDirPath, fileName);
-	ofstream fileStream(filePath, ios::app);
+	cout << "Howdy, what would you like to do? Type a number and press enter:" << endl;
+	cout << "\t\t[1] Read a file." << endl;
+	cout << "\t\t[2] Create a text file." << endl;
 
-	if (fileStream)
-	{
-		cout << "Our file " << fileName << ".txt has been created! Now, let's add some content to it." << endl;
-		cout << "Type whatever you want, and press enter to save and continue." << endl;
-		cout << "When you're finish, type exit and press enter." << endl;
+	int action;
+	cin >> action;
 
-		string content;
+	// TODO: Add user interaction
+	string readFilePath = fileDirPath + "/readFile.txt";
+	string createFilePath = fileDirPath + "/createFile.txt";
 
-		while (getline(cin, content))
-		{
-			if (content != "exit")
-				fileStream << content << endl;
-			else
-				break;
-		}
-	}
-	else
-		cout << "Handle errors" << endl;
+	if (action == 1)
+		file.open(readFilePath, ios::in);
+	else if (action == 2)
+		file.open(createFilePath, ios::out);
 
 	return 0;
 }
