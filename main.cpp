@@ -21,7 +21,7 @@ int main()
 {
 	string cwd = getCurrentProjectPath();
 	string fileDirPath = cwd + "/created-files";
-	string filePath, fileContent, fileName;
+	string filePath, fileContent;
 	fstream file;
 
 	if (!fs::is_directory(fileDirPath))
@@ -33,9 +33,6 @@ int main()
 
 	int action;
 	cin >> action;
-
-	// TODO: Add user interaction
-	string createFilePath = fileDirPath + "/createFile.txt";
 
 	if (action == 1)
 	{
@@ -58,7 +55,7 @@ int main()
 
 		if (file.is_open())
 		{
-			fileName = fs::path(filePath).filename().string();
+			string fileName = fs::path(filePath).filename().string();
 
 			cout << "\nReading file: " << fileName << "\n" << endl;
 			while (getline(file, fileContent))
@@ -101,8 +98,44 @@ int main()
 		else
 			cout << "Unable to open file" << endl;
 	}
-	else if (action == 2)
-		file.open(createFilePath, ios::out);
+	else
+	{
+		cout << "Enter file name:" << endl;
+
+		string fileName;
+		cin >> fileName;
+
+		if (fileName.find('.') == string::npos)
+			fileName += ".txt";
+		else
+		{
+			size_t needle = fileName.find_last_of('.'); // unsigned integer type of the result of the sizeof operator
+
+			if (fileName.substr(needle + 1) != "txt")
+				fileName = fileName.substr(0, needle) + ".txt";
+		}
+
+		filePath = fileDirPath + "/" + fileName;
+		file.open(filePath, ios::out);
+
+		if (file.is_open())
+		{
+			cout << "\nEditing file: " << fileName << endl;
+			cout << "(Press enter to save and continue, type exit and press enter to stop)\n" << endl;
+
+			while (getline(cin, fileContent))
+			{
+				if (fileContent != "exit")
+					file << fileContent << endl;
+				else
+					break;
+			}
+			file.close();
+			cout << "\n*-- End editing file --*" << endl;
+		}
+		else
+			cout << "Unable to open file" << endl;
+	}
 
 	return 0;
 }
