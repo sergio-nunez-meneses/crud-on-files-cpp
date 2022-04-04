@@ -12,11 +12,6 @@ string getCurrentProjectPath()
 	return fs::current_path().parent_path().string();
 }
 
-string setFilePath(const string &path, const string &file)
-{
-	return path + "/" + file + ".txt";
-}
-
 int main()
 {
 	string cwd = getCurrentProjectPath();
