@@ -46,13 +46,13 @@ int main()
 
 	cout << "Howdy, what would you like to do? Type number and press enter:" << endl;
 	if (!files.empty())
-		cout << "\t\t[1] Read a file" << endl;
-	cout << "\t\t[2] Create a text file" << endl;
+		cout << "\t\t[r] Read a file" << endl;
+	cout << "\t\t[c] Create a text file" << endl;
 
-	int action;
+	string action;
 	cin >> action;
 
-	if (action == 1)
+	if (action == "r")
 	{
 		cout << "\nWhich file would you like to read? Type a number and press enter:" << endl;
 		displayStoredFiles(files);
@@ -75,12 +75,12 @@ int main()
 			cout << "\n*-- End reading file --*" << endl;
 
 			cout << "\nWould you like to edit this file?" << endl;
-			cout << "\t\t[1] Yes" << endl;
-			cout << "\t\t[2] No" << endl;
+			cout << "\t\t[y] Yes" << endl;
+			cout << "\t\t[n] No" << endl;
 
 			cin >> action;
 
-			if (action == 1)
+			if (action == "y")
 			{
 				file.open(filePath, ios::out | ios::app);
 
@@ -99,8 +99,6 @@ int main()
 					file.close();
 					cout << "\n*-- End editing file --*" << endl;
 				}
-				else
-					cout << "Unable to open file" << endl;
 			}
 			else
 				file.close();
@@ -108,7 +106,7 @@ int main()
 		else
 			cout << "Unable to open file" << endl;
 	}
-	else
+	else if (action == "c")
 	{
 		cout << "Enter file name:" << endl;
 
