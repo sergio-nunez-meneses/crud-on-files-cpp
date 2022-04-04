@@ -33,6 +33,20 @@ void displayStoredFiles(const vector<string> &files)
 	}
 }
 
+void editFile(fstream &file, const string &fileName, string &fileContent)
+{
+	cout << "\nEditing file: " << fileName << endl;
+	cout << "(Press enter to save and continue, type exit and press enter to stop)\n" << endl;
+
+	while (getline(cin, fileContent))
+	{
+		if (fileContent != "exit") file << fileContent << endl;
+		else break;
+	}
+	file.close();
+	cout << "\n*-- End editing file --*" << endl;
+}
+
 int main()
 {
 	string cwd = getCurrentProjectPath();
@@ -83,17 +97,9 @@ int main()
 
 				if (file.is_open())
 				{
-					cout << "\nEditing file: " << fileName << endl;
-					cout << "(Press enter to save and continue, type exit and press enter to stop)\n" << endl;
-
-					while (getline(cin, fileContent))
-					{
-						if (fileContent != "exit") file << fileContent << endl;
-						else break;
-					}
-					file.close();
-					cout << "\n*-- End editing file --*" << endl;
+					editFile(file, fileName, fileContent);
 				}
+				else cout << "Unable to open file" << endl;
 			}
 			else file.close();
 		}
@@ -119,16 +125,7 @@ int main()
 
 		if (file.is_open())
 		{
-			cout << "\nEditing file: " << fileName << endl;
-			cout << "(Press enter to save and continue, type exit and press enter to stop)\n" << endl;
-
-			while (getline(cin, fileContent))
-			{
-				if (fileContent != "exit") file << fileContent << endl;
-				else break;
-			}
-			file.close();
-			cout << "\n*-- End editing file --*" << endl;
+			editFile(file, fileName, fileContent);
 		}
 		else cout << "Unable to open file" << endl;
 	}
