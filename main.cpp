@@ -12,18 +12,41 @@ string getCurrentProjectPath()
 	return fs::current_path().parent_path().string();
 }
 
+vector<string> getStoredFiles(const string &path)
+{
+	vector<string> files;
+
+	for (const auto &entry: fs::directory_iterator(path))
+		files.push_back(entry.path().string());
+
+	return files;
+}
+
+void displayStoredFiles(const vector<string> &files)
+{
+	int fileIndex = 0;
+	for (const auto & file : files) {
+		++fileIndex;
+
+		cout << "\t\t[" << fileIndex << "] " << file << endl;
+	}
+}
+
 int main()
 {
 	string cwd = getCurrentProjectPath();
 	string fileDirPath = cwd + "/created-files";
-	string filePath, fileContent;
-	fstream file;
 
 	if (!fs::is_directory(fileDirPath))
 		fs::create_directory(fileDirPath);
 
-	cout << "Howdy, what would you like to do? Type a number and press enter:" << endl;
-	cout << "\t\t[1] Read a file" << endl;
+	vector<string> files = getStoredFiles(fileDirPath);
+	string filePath, fileContent;
+	fstream file;
+
+	cout << "Howdy, what would you like to do? Type number and press enter:" << endl;
+	if (!files.empty())
+		cout << "\t\t[1] Read a file" << endl;
 	cout << "\t\t[2] Create a text file" << endl;
 
 	int action;
@@ -32,17 +55,9 @@ int main()
 	if (action == 1)
 	{
 		cout << "\nWhich file would you like to read? Type a number and press enter:" << endl;
+		displayStoredFiles(files);
 
-		vector<string> files;
-
-		int fileIndex = 0;
-		for (const auto &entry: fs::directory_iterator(fileDirPath))
-		{
-			files.push_back(entry.path().string());
-			++fileIndex;
-
-			cout << "\t\t[" << fileIndex << "] " << entry.path().string() << endl;
-		}
+		int fileIndex;
 		cin >> fileIndex;
 
 		filePath = files[fileIndex - 1];
