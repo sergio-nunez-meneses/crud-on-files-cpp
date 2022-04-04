@@ -95,10 +95,7 @@ int main()
 			{
 				file.open(filePath, ios::out | ios::app);
 
-				if (file.is_open())
-				{
-					editFile(file, fileName, fileContent);
-				}
+				if (file.is_open()) editFile(file, fileName, fileContent);
 				else cout << "Unable to open file" << endl;
 			}
 			else file.close();
@@ -123,10 +120,7 @@ int main()
 		filePath = fileDirPath + "/" + fileName;
 		file.open(filePath, ios::out);
 
-		if (file.is_open())
-		{
-			editFile(file, fileName, fileContent);
-		}
+		if (file.is_open()) editFile(file, fileName, fileContent);
 		else cout << "Unable to open file" << endl;
 	}
 
