@@ -37,7 +37,7 @@ void displayStoredFiles(const vector<string> &files)
 
 void checkFileNameExtension(string &fileName)
 {
-	if (fileName.find('.') == string::npos) fileName += ".txt";
+	if (fileName.find('.') == string::npos) fileName = fileName + ".txt";
 	else
 	{
 		size_t needle = fileName.find_last_of('.'); // unsigned integer type of the result of the sizeof operator
@@ -81,7 +81,36 @@ int main()
 	string userAction, goToAction;
 	while (getline(cin, userAction))
 	{
-		if (userAction == "c") cout << "-- creating file --\n" << endl;
+		if (userAction == "c" || goToAction == "c")
+		{
+			cout << "\nType the file name:" << endl;
+
+			string fileName;
+			cin >> fileName;
+
+			checkFileNameExtension(fileName);
+
+			filePath = fileDirPath += "/" + fileName;
+			file.open(filePath, ios::out);
+
+			if (file.is_open()) {
+				cout << "\nTo add content, type whatever you want, and press enter to save and continue." << endl;
+				cout << "To stop, type exit and press enter." << endl;
+
+				cout << "\n----- Editing file " << fileName << " -----" << endl;
+				editFile(file, fileContent);
+				cout << "----- End editing file -----" << endl;
+
+				cout << "\nWhat would you like to do now?" << endl;
+				cout << "\t\t[c] Create a file" << endl;
+				cout << "\t\t[u] Update file" << endl;
+				cout << "\t\t[e] Quit" << endl;
+
+				cin >> userAction;
+				goToAction = userAction;
+			}
+			else cout << "Unable to open file" << endl;
+		}
 		else if (userAction == "r")
 		{
 			cout << "\nWhich file would you like to read? Type a number and press enter:" << endl;
