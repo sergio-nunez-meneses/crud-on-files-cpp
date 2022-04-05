@@ -44,6 +44,14 @@ void checkFileNameExtension(string &fileName)
 	}
 }
 
+void readFile(fstream &file, const string &fileName, string &fileContent)
+{
+	cout << "\nReading file: " << fileName << "\n" << endl;
+	while (getline(file, fileContent)) cout << fileContent << endl;
+	file.close();
+	cout << "\n*-- End reading file --*" << endl;
+}
+
 void editFile(fstream &file, const string &fileName, string &fileContent)
 {
 	cout << "\nEditing file: " << fileName << endl;
@@ -91,10 +99,7 @@ int main()
 		{
 			string fileName = fs::path(filePath).filename().string();
 
-			cout << "\nReading file: " << fileName << "\n" << endl;
-			while (getline(file, fileContent)) cout << fileContent << endl;
-			file.close();
-			cout << "\n*-- End reading file --*" << endl;
+			readFile(file, fileName, fileContent);
 
 			cout << "\nWould you like to edit this file?" << endl;
 			cout << "\t\t[y] Yes" << endl;
