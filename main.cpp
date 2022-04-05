@@ -59,7 +59,7 @@ void editFile(fstream &file, string &fileContent)
 		if (fileContent != "exit") file << fileContent << endl;
 		else break;
 	}
-	file.close();
+	// file.close(); // TODO: Use when sending from create to update
 }
 
 int main()
@@ -75,7 +75,11 @@ int main()
 
 	cout << "Howdy, what would you like to do? Type a character and press enter:" << endl;
 	cout << "\t\t[c] Create a file" << endl;
-	if (!files.empty()) cout << "\t\t[r] Read a file" << endl;
+	if (!files.empty())
+	{
+		cout << "\t\t[r] Read a file" << endl;
+		cout << "\t\t[u] Update a file" << endl;
+	}
 	cout << "\t\t[e] Quit" << endl;
 
 	string userAction, goToAction;
@@ -93,6 +97,7 @@ int main()
 			filePath = fileDirPath + "/" + fileName;
 			file.open(filePath, ios::out);
 
+			// TODO: Send to update
 			if (file.is_open()) {
 				cout << "\nTo add content, type whatever you want, and press enter to save and continue." << endl;
 				cout << "To stop, type exit and press enter." << endl;
@@ -106,14 +111,15 @@ int main()
 				cout << "\t\t[u] Update file" << endl;
 				cout << "\t\t[e] Quit" << endl;
 
-				cin >> userAction;
-				goToAction = userAction;
+				cin >> goToAction;
 			}
 			else cout << "Unable to open file" << endl;
 		}
 		else if (userAction == "r")
 		{
+			// TODO: Refactor output text (isRead)
 			cout << "\nWhich file would you like to read? Type a number and press enter:" << endl;
+			// TODO: Refactor loop
 			for (int i = 0; i < files.size(); ++i) cout << "\t\t[" << i + 1 << "] " << files[i] << endl;
 
 			int fileIndex;
@@ -134,13 +140,45 @@ int main()
 				cout << "\t\t[u] Update file" << endl;
 				cout << "\t\t[e] Quit" << endl;
 
-				cin >> userAction;
-
-				goToAction = userAction;
+				cin >> goToAction;
 			}
 			else cout << "Unable to open file" << endl;
 		}
-		else if (userAction == "u" || goToAction == "u") cout << "-- updating file --\n" << endl;
+		else if (userAction == "u" || goToAction == "u") {
+			if (file.is_open()) cout << "-- updating file --\n" << endl;
+			else
+			{
+				// TODO: Refactor output text (isUpdate)
+				cout << "\nWhich file would you like to update? Type a number and press enter:" << endl;
+				// TODO: Refactor loop
+				for (int i = 0; i < files.size(); ++i) cout << "\t\t[" << i + 1 << "] " << files[i] << endl;
+
+				int fileIndex;
+				cin >> fileIndex;
+
+				filePath = files[fileIndex - 1];
+				file.open(filePath, ios::out);
+
+				if (file.is_open()) {
+					string fileName = fs::path(filePath).filename().string();
+
+					cout << "\nTo add content, type whatever you want, and press enter to save and continue." << endl;
+					cout << "To stop, type exit and press enter." << endl;
+
+					cout << "\n----- Editing file " << fileName << " -----" << endl;
+					editFile(file, fileContent);
+					cout << "----- End editing file -----" << endl;
+
+					cout << "\nWhat would you like to do now?" << endl;
+					cout << "\t\t[c] Create a file" << endl;
+					cout << "\t\t[r] Read a file" << endl;
+					cout << "\t\t[u] Update file" << endl;
+					cout << "\t\t[e] Quit" << endl;
+
+					cin >> goToAction;
+				}
+			}
+		}
 		else if (userAction == "d") cout << "-- deleting file --\n" << endl;
 		else if (userAction == "m") cout << "-- menu --\n" << endl;
 		else if (userAction == "e" || goToAction == "e") break;
