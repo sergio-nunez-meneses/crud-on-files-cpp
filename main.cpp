@@ -90,7 +90,7 @@ int main()
 
 			checkFileNameExtension(fileName);
 
-			filePath = fileDirPath += "/" + fileName;
+			filePath = fileDirPath + "/" + fileName;
 			file.open(filePath, ios::out);
 
 			if (file.is_open()) {
