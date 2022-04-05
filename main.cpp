@@ -44,26 +44,20 @@ void checkFileNameExtension(string &fileName)
 	}
 }
 
-void readFile(fstream &file, const string &fileName, string &fileContent)
+void readFile(fstream &file, string &fileContent)
 {
-	cout << "\nReading file: " << fileName << "\n" << endl;
 	while (getline(file, fileContent)) cout << fileContent << endl;
 	file.close();
-	cout << "\n*-- End reading file --*" << endl;
 }
 
-void editFile(fstream &file, const string &fileName, string &fileContent)
+void editFile(fstream &file, string &fileContent)
 {
-	cout << "\nEditing file: " << fileName << endl;
-	cout << "(Press enter to save and continue, type exit and press enter to stop)\n" << endl;
-
 	while (getline(cin, fileContent))
 	{
 		if (fileContent != "exit") file << fileContent << endl;
 		else break;
 	}
 	file.close();
-	cout << "\n*-- End editing file --*" << endl;
 }
 
 int main()
@@ -99,7 +93,9 @@ int main()
 		{
 			string fileName = fs::path(filePath).filename().string();
 
-			readFile(file, fileName, fileContent);
+			cout << "\n----- Reading file " << fileName << " -----" << endl;
+			readFile(file, fileContent);
+			cout << "\n----- End reading file -----" << endl;
 
 			cout << "\nWould you like to edit this file?" << endl;
 			cout << "\t\t[y] Yes" << endl;
@@ -111,7 +107,12 @@ int main()
 			{
 				file.open(filePath, ios::out | ios::app);
 
-				if (file.is_open()) editFile(file, fileName, fileContent);
+				if (file.is_open()) {
+					cout << "\nPress enter to save and continue, type exit and press enter to stop)" << endl;
+					cout << "\n----- Editing file " << fileName << " -----" << endl;
+					editFile(file, fileContent);
+					cout << "\n----- End editing file -----" << endl;
+				}
 				else cout << "Unable to open file" << endl;
 			}
 			else file.close();
@@ -130,7 +131,12 @@ int main()
 		filePath = fileDirPath + "/" + fileName;
 		file.open(filePath, ios::out);
 
-		if (file.is_open()) editFile(file, fileName, fileContent);
+		if (file.is_open()) {
+			cout << "\nPress enter to save and continue, type exit and press enter to stop)" << endl;
+			cout << "\n----- Editing file " << fileName << " -----" << endl;
+			editFile(file, fileContent);
+			cout << "\n----- End editing file -----" << endl;
+		}
 		else cout << "Unable to open file" << endl;
 	}
 
