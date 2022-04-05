@@ -16,7 +16,8 @@ vector<string> getStoredFiles(const string &path)
 {
 	vector<string> files;
 
-	for (const auto &entry: fs::directory_iterator(path)) {
+	for (const auto &entry: fs::directory_iterator(path))
+	{
 		string filePath = entry.path().string();
 		files.push_back(filePath);
 	}
@@ -26,7 +27,8 @@ vector<string> getStoredFiles(const string &path)
 void displayStoredFiles(const vector<string> &files)
 {
 	int fileIndex = 0;
-	for (const auto & file : files) {
+	for (const auto &file: files)
+	{
 		++fileIndex;
 
 		cout << "\t\t[" << fileIndex << "] " << file << endl;
@@ -71,74 +73,51 @@ int main()
 	string filePath, fileContent;
 	fstream file;
 
-	cout << "Howdy, what would you like to do? Type number and press enter:" << endl;
+	cout << "Howdy, what would you like to do? Type a character and press enter:" << endl;
+	cout << "\t\t[c] Create a file" << endl;
 	if (!files.empty()) cout << "\t\t[r] Read a file" << endl;
-	cout << "\t\t[c] Create a text file" << endl;
+	cout << "\t\t[e] Quit" << endl;
 
-	string action;
-	cin >> action;
-
-	if (action == "r")
+	string userAction, goToAction;
+	while (getline(cin, userAction))
 	{
-		cout << "\nWhich file would you like to read? Type a number and press enter:" << endl;
-		displayStoredFiles(files);
-
-		int fileIndex;
-		cin >> fileIndex;
-
-		filePath = files[fileIndex - 1];
-		file.open(filePath, ios::in);
-
-		if (file.is_open())
+		if (userAction == "c") cout << "-- creating file --\n" << endl;
+		else if (userAction == "r")
 		{
-			string fileName = fs::path(filePath).filename().string();
+			cout << "\nWhich file would you like to read? Type a number and press enter:" << endl;
+			for (int i = 0; i < files.size(); ++i) cout << "\t\t[" << i + 1 << "] " << files[i] << endl;
 
-			cout << "\n----- Reading file " << fileName << " -----" << endl;
-			readFile(file, fileContent);
-			cout << "\n----- End reading file -----" << endl;
+			int fileIndex;
+			cin >> fileIndex;
 
-			cout << "\nWould you like to edit this file?" << endl;
-			cout << "\t\t[y] Yes" << endl;
-			cout << "\t\t[n] No" << endl;
+			filePath = files[fileIndex - 1];
+			file.open(filePath, ios::in);
 
-			cin >> action;
-
-			if (action == "y")
+			if (file.is_open())
 			{
-				file.open(filePath, ios::out | ios::app);
+				string fileName = fs::path(filePath).filename().string();
 
-				if (file.is_open()) {
-					cout << "\nPress enter to save and continue, type exit and press enter to stop)" << endl;
-					cout << "\n----- Editing file " << fileName << " -----" << endl;
-					editFile(file, fileContent);
-					cout << "\n----- End editing file -----" << endl;
-				}
-				else cout << "Unable to open file" << endl;
+				cout << "\n----- Reading file " << fileName << " -----" << endl;
+				readFile(file, fileContent);
+				cout << "----- End reading file -----" << endl;
+
+				cout << "\nWhat would you like to do now?" << endl;
+				cout << "\t\t[u] Update file" << endl;
+				cout << "\t\t[e] Quit" << endl;
+
+				cin >> userAction;
+
+				goToAction = userAction;
 			}
-			else file.close();
+			else cout << "Unable to open file" << endl;
 		}
-		else cout << "Unable to open file" << endl;
+		else if (userAction == "u" || goToAction == "u") cout << "-- updating file --\n" << endl;
+		else if (userAction == "d") cout << "-- deleting file --\n" << endl;
+		else if (userAction == "m") cout << "-- menu --\n" << endl;
+		else if (userAction == "e" || goToAction == "e") break;
+		else cout << "-- pressed " << userAction << " --\n" << endl;
 	}
-	else if (action == "c")
-	{
-		cout << "Enter file name:" << endl;
-
-		string fileName;
-		cin >> fileName;
-
-		checkFileNameExtension(fileName);
-
-		filePath = fileDirPath + "/" + fileName;
-		file.open(filePath, ios::out);
-
-		if (file.is_open()) {
-			cout << "\nPress enter to save and continue, type exit and press enter to stop)" << endl;
-			cout << "\n----- Editing file " << fileName << " -----" << endl;
-			editFile(file, fileContent);
-			cout << "\n----- End editing file -----" << endl;
-		}
-		else cout << "Unable to open file" << endl;
-	}
+	cout << "Catch ya later buddy!" << endl;
 
 	return 0;
 }
