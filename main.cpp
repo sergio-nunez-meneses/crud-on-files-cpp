@@ -33,6 +33,17 @@ void displayStoredFiles(const vector<string> &files)
 	}
 }
 
+void checkFileNameExtension(string &fileName)
+{
+	if (fileName.find('.') == string::npos) fileName += ".txt";
+	else
+	{
+		size_t needle = fileName.find_last_of('.'); // unsigned integer type of the result of the sizeof operator
+
+		if (fileName.substr(needle + 1) != "txt") fileName = fileName.substr(0, needle) + ".txt";
+	}
+}
+
 void editFile(fstream &file, const string &fileName, string &fileContent)
 {
 	cout << "\nEditing file: " << fileName << endl;
@@ -109,13 +120,7 @@ int main()
 		string fileName;
 		cin >> fileName;
 
-		if (fileName.find('.') == string::npos) fileName += ".txt";
-		else
-		{
-			size_t needle = fileName.find_last_of('.'); // unsigned integer type of the result of the sizeof operator
-
-			if (fileName.substr(needle + 1) != "txt") fileName = fileName.substr(0, needle) + ".txt";
-		}
+		checkFileNameExtension(fileName);
 
 		filePath = fileDirPath + "/" + fileName;
 		file.open(filePath, ios::out);
