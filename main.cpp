@@ -53,6 +53,7 @@ void editFile(fstream &file, string &fileContent)
 		else break;
 	}
 	file.close();
+	file.flush();
 }
 
 int main()
