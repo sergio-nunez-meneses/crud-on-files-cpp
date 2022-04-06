@@ -24,15 +24,12 @@ vector<string> getStoredFiles(const string &path)
 	return files;
 }
 
-void displayStoredFiles(const vector<string> &files)
+void displayStoredFiles(const vector<string> &files, const string &userAction = "", const string &goToAction = "")
 {
-	int fileIndex = 0;
-	for (const auto &file: files)
-	{
-		++fileIndex;
+	string action = (userAction == "r" || goToAction == "r") ? "read" : "update";
 
-		cout << "\t\t[" << fileIndex << "] " << file << endl;
-	}
+	cout << "\nWhich file would you like to " << action << "? Type a number and press enter:" << endl;
+	for (int i = 0; i < files.size(); ++i) cout << "\t\t[" << i + 1 << "] " << files[i] << endl;
 }
 
 void checkFileNameExtension(string &fileName)
@@ -115,12 +112,9 @@ int main()
 			}
 			else cout << "Unable to open file" << endl;
 		}
-		else if (userAction == "r")
+		else if (userAction == "r" || goToAction == "r")
 		{
-			// TODO: Refactor output text (isRead)
-			cout << "\nWhich file would you like to read? Type a number and press enter:" << endl;
-			// TODO: Refactor loop
-			for (int i = 0; i < files.size(); ++i) cout << "\t\t[" << i + 1 << "] " << files[i] << endl;
+			displayStoredFiles(files, userAction, goToAction);
 
 			int fileIndex;
 			cin >> fileIndex;
@@ -148,10 +142,7 @@ int main()
 			if (file.is_open()) cout << "-- updating file --\n" << endl;
 			else
 			{
-				// TODO: Refactor output text (isUpdate)
-				cout << "\nWhich file would you like to update? Type a number and press enter:" << endl;
-				// TODO: Refactor loop
-				for (int i = 0; i < files.size(); ++i) cout << "\t\t[" << i + 1 << "] " << files[i] << endl;
+				displayStoredFiles(files, userAction, goToAction);
 
 				int fileIndex;
 				cin >> fileIndex;
