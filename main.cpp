@@ -52,7 +52,7 @@ void editFile(fstream &file, string &fileContent)
 		if (fileContent != "exit") file << fileContent << endl;
 		else break;
 	}
-	// file.close(); // TODO: Use when sending from create to update
+	file.close();
 }
 
 int main()
@@ -88,12 +88,12 @@ int main()
 			checkFileNameExtension(fileName);
 
 			filePath = fileDirPath + "/" + fileName;
-			file.open(filePath, ios::out);
 
 			goToAction = "u";
 		}
 		else if (userAction == "r" || goToAction == "r")
 		{
+			files = getStoredFiles(fileDirPath);
 			displayStoredFiles(files, userAction, goToAction);
 
 			int fileIndex;
@@ -120,6 +120,8 @@ int main()
 		}
 		else if (userAction == "u" || goToAction == "u")
 		{
+			file.open(filePath, ios::out | ios::app);
+
 			if (file.is_open())
 			{
 				string fileName = fs::path(filePath).filename().string();
@@ -141,13 +143,13 @@ int main()
 			}
 			else
 			{
+				files = getStoredFiles(fileDirPath);
 				displayStoredFiles(files, userAction, goToAction);
 
 				int fileIndex;
 				cin >> fileIndex;
 
 				filePath = files[fileIndex - 1];
-				file.open(filePath, ios::out);
 
 				goToAction = "u";
 			}
