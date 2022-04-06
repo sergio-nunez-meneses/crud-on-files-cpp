@@ -90,23 +90,7 @@ int main()
 			filePath = fileDirPath + "/" + fileName;
 			file.open(filePath, ios::out);
 
-			// TODO: Send to update
-			if (file.is_open()) {
-				cout << "\nTo add content, type whatever you want, and press enter to save and continue." << endl;
-				cout << "To stop, type exit and press enter." << endl;
-
-				cout << "\n----- Editing file " << fileName << " -----" << endl;
-				editFile(file, fileContent);
-				cout << "----- End editing file -----" << endl;
-
-				cout << "\nWhat would you like to do now?" << endl;
-				cout << "\t\t[c] Create a file" << endl;
-				cout << "\t\t[u] Update file" << endl;
-				cout << "\t\t[e] Quit" << endl;
-
-				cin >> goToAction;
-			}
-			else cout << "Unable to open file" << endl;
+			goToAction = "u";
 		}
 		else if (userAction == "r" || goToAction == "r")
 		{
@@ -134,8 +118,27 @@ int main()
 			}
 			else cout << "Unable to open file" << endl;
 		}
-		else if (userAction == "u" || goToAction == "u") {
-			if (file.is_open()) cout << "-- updating file --\n" << endl;
+		else if (userAction == "u" || goToAction == "u")
+		{
+			if (file.is_open())
+			{
+				string fileName = fs::path(filePath).filename().string();
+
+				cout << "\nTo add content, type whatever you want, and press enter to save and continue." << endl;
+				cout << "To stop, type exit and press enter." << endl;
+
+				cout << "\n----- Editing file " << fileName << " -----" << endl;
+				editFile(file, fileContent);
+				cout << "----- End editing file -----" << endl;
+
+				cout << "\nWhat would you like to do now?" << endl;
+				cout << "\t\t[c] Create a file" << endl;
+				cout << "\t\t[r] Read a file" << endl;
+				cout << "\t\t[u] Update file" << endl;
+				cout << "\t\t[e] Quit" << endl;
+
+				cin >> goToAction;
+			}
 			else
 			{
 				displayStoredFiles(files, userAction, goToAction);
@@ -146,24 +149,7 @@ int main()
 				filePath = files[fileIndex - 1];
 				file.open(filePath, ios::out);
 
-				if (file.is_open()) {
-					string fileName = fs::path(filePath).filename().string();
-
-					cout << "\nTo add content, type whatever you want, and press enter to save and continue." << endl;
-					cout << "To stop, type exit and press enter." << endl;
-
-					cout << "\n----- Editing file " << fileName << " -----" << endl;
-					editFile(file, fileContent);
-					cout << "----- End editing file -----" << endl;
-
-					cout << "\nWhat would you like to do now?" << endl;
-					cout << "\t\t[c] Create a file" << endl;
-					cout << "\t\t[r] Read a file" << endl;
-					cout << "\t\t[u] Update file" << endl;
-					cout << "\t\t[e] Quit" << endl;
-
-					cin >> goToAction;
-				}
+				goToAction = "u";
 			}
 		}
 		else if (userAction == "d") cout << "-- deleting file --\n" << endl;
