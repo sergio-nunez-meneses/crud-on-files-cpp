@@ -15,12 +15,8 @@ string getCurrentProjectPath()
 vector<string> getStoredFiles(const string &path)
 {
 	vector<string> files;
+	for (const auto &entry: fs::directory_iterator(path)) files.push_back(entry.path().string());
 
-	for (const auto &entry: fs::directory_iterator(path))
-	{
-		string filePath = entry.path().string();
-		files.push_back(filePath);
-	}
 	return files;
 }
 
