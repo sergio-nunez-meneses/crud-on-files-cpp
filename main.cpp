@@ -88,7 +88,6 @@ int main()
 			checkFileNameExtension(fileName);
 
 			filePath = fileDirPath + "/" + fileName;
-
 			goToAction = "u";
 		}
 		else if (userAction == "r" || goToAction == "r")
@@ -150,7 +149,6 @@ int main()
 				cin >> fileIndex;
 
 				filePath = files[fileIndex - 1];
-
 				goToAction = "u";
 			}
 		}
