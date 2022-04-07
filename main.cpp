@@ -28,6 +28,17 @@ void displayStoredFiles(const vector<string> &files, const string &userAction = 
 	for (int i = 0; i < files.size(); ++i) cout << "\t\t[" << i + 1 << "] " << files[i] << endl;
 }
 
+void displayActionMenu(const vector<string> &files)
+{
+	cout << "\t\t[c] Create a file" << endl;
+	if (!files.empty())
+	{
+		cout << "\t\t[r] Read a file" << endl;
+		cout << "\t\t[u] Update a file" << endl;
+	}
+	cout << "\t\t[q] Quit" << endl;
+}
+
 void checkFileNameExtension(string &fileName)
 {
 	if (fileName.find('.') == string::npos) fileName = fileName + ".txt";
@@ -81,13 +92,7 @@ int main()
 	fstream file;
 
 	cout << "Howdy, what would you like to do? Type a character and press enter:" << endl;
-	cout << "\t\t[c] Create a file" << endl;
-	if (!files.empty())
-	{
-		cout << "\t\t[r] Read a file" << endl;
-		cout << "\t\t[u] Update a file" << endl;
-	}
-	cout << "\t\t[q] Quit" << endl;
+	displayActionMenu(files);
 
 	string userAction, goToAction;
 	while (getline(cin, userAction))
@@ -120,8 +125,7 @@ int main()
 				readFile(file, filePath, fileContent);
 
 				cout << "\nWhat would you like to do now?" << endl;
-				cout << "\t\t[u] Update file" << endl;
-				cout << "\t\t[q] Quit" << endl;
+				displayActionMenu(getStoredFiles(fileDirPath));
 
 				cin >> goToAction;
 			}
@@ -136,10 +140,7 @@ int main()
 				editFile(file, filePath, fileContent);
 
 				cout << "\nWhat would you like to do now?" << endl;
-				cout << "\t\t[c] Create a file" << endl;
-				cout << "\t\t[r] Read a file" << endl;
-				cout << "\t\t[u] Update file" << endl;
-				cout << "\t\t[q] Quit" << endl;
+				displayActionMenu(getStoredFiles(fileDirPath));
 
 				cin >> goToAction;
 			}
@@ -156,7 +157,6 @@ int main()
 			}
 		}
 		else if (userAction == "d") cout << "-- deleting file --\n" << endl;
-		else if (userAction == "m") cout << "-- menu --\n" << endl;
 		else if (userAction == "q" || goToAction == "q") break;
 		else cout << "-- pressed " << userAction << " --\n" << endl;
 	}
