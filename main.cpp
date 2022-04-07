@@ -28,8 +28,13 @@ void displayStoredFiles(const vector<string> &files, const string &userAction = 
 	for (int i = 0; i < files.size(); ++i) cout << "\t\t[" << i + 1 << "] " << files[i] << endl;
 }
 
-void displayActionMenu(const vector<string> &files)
+void displayActionMenu(const vector<string> &files, const string &action = "")
 {
+	string title = (action.empty())
+	               ? "Howdy, what would you like to do?"
+	               : "\nWhat would you like to do now?";
+
+	cout << title << " Type a character and press enter:" << endl;
 	cout << "\t\t[c] Create a file" << endl;
 	if (!files.empty())
 	{
@@ -88,13 +93,11 @@ int main()
 	if (!fs::is_directory(fileDirPath)) fs::create_directory(fileDirPath);
 
 	vector<string> files = getStoredFiles(fileDirPath);
-	string filePath, fileContent;
+	string filePath, fileContent, userAction, goToAction;
 	fstream file;
 
-	cout << "Howdy, what would you like to do? Type a character and press enter:" << endl;
 	displayActionMenu(files);
 
-	string userAction, goToAction;
 	while (getline(cin, userAction))
 	{
 		if (userAction == "c" || goToAction == "c")
@@ -123,9 +126,7 @@ int main()
 			if (file.is_open())
 			{
 				readFile(file, filePath, fileContent);
-
-				cout << "\nWhat would you like to do now?" << endl;
-				displayActionMenu(getStoredFiles(fileDirPath));
+				displayActionMenu(getStoredFiles(fileDirPath), "r");
 
 				cin >> goToAction;
 			}
@@ -138,9 +139,7 @@ int main()
 			if (file.is_open())
 			{
 				editFile(file, filePath, fileContent);
-
-				cout << "\nWhat would you like to do now?" << endl;
-				displayActionMenu(getStoredFiles(fileDirPath));
+				displayActionMenu(getStoredFiles(fileDirPath), "u");
 
 				cin >> goToAction;
 			}
