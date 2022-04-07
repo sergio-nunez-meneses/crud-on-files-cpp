@@ -40,6 +40,7 @@ void displayActionMenu(const vector<string> &files, const string &action = "")
 	{
 		cout << "\t\t[r] Read a file" << endl;
 		cout << "\t\t[u] Update a file" << endl;
+		cout << "\t\t[d] Delete a file" << endl;
 	}
 	cout << "\t\t[q] Quit" << endl;
 }
@@ -83,6 +84,17 @@ void editFile(fstream &file, const string &filePath, string &fileContent)
 
 	file.close();
 	file.flush();
+}
+
+void deleteFile(const string &filePath)
+{
+	string fileName = fs::path(filePath).filename().string();
+
+	cout << "\n----- Deleting file " << fileName << " -----" << endl;
+	const bool fileDeleted = fs::remove(filePath);
+
+	if (fileDeleted) cout << "----- End deleting file -----" << endl;
+	else cout << "Unable to delete file" << endl;
 }
 
 int main()
@@ -132,13 +144,15 @@ int main()
 			}
 			else cout << "Unable to open file" << endl;
 		}
-		else if (userAction == "u" || goToAction == "u")
+		else if (userAction == "u" || goToAction == "u" || userAction == "d" || goToAction == "d")
 		{
 			file.open(filePath, ios::out | ios::app);
 
 			if (file.is_open())
 			{
-				editFile(file, filePath, fileContent);
+				if (userAction == "u" || goToAction == "u") editFile(file, filePath, fileContent);
+				else if (userAction == "d" || goToAction == "d") deleteFile(filePath);
+
 				displayActionMenu(getStoredFiles(fileDirPath), "u");
 
 				cin >> goToAction;
@@ -152,10 +166,9 @@ int main()
 				cin >> fileIndex;
 
 				filePath = files[fileIndex - 1];
-				goToAction = "u";
+				goToAction = userAction;
 			}
 		}
-		else if (userAction == "d") cout << "-- deleting file --\n" << endl;
 		else if (userAction == "q" || goToAction == "q") break;
 		else cout << "-- pressed " << userAction << " --\n" << endl;
 	}
