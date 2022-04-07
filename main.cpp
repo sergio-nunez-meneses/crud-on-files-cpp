@@ -74,7 +74,7 @@ int main()
 		cout << "\t\t[r] Read a file" << endl;
 		cout << "\t\t[u] Update a file" << endl;
 	}
-	cout << "\t\t[e] Quit" << endl;
+	cout << "\t\t[q] Quit" << endl;
 
 	string userAction, goToAction;
 	while (getline(cin, userAction))
@@ -112,7 +112,7 @@ int main()
 
 				cout << "\nWhat would you like to do now?" << endl;
 				cout << "\t\t[u] Update file" << endl;
-				cout << "\t\t[e] Quit" << endl;
+				cout << "\t\t[q] Quit" << endl;
 
 				cin >> goToAction;
 			}
@@ -137,7 +137,7 @@ int main()
 				cout << "\t\t[c] Create a file" << endl;
 				cout << "\t\t[r] Read a file" << endl;
 				cout << "\t\t[u] Update file" << endl;
-				cout << "\t\t[e] Quit" << endl;
+				cout << "\t\t[q] Quit" << endl;
 
 				cin >> goToAction;
 			}
@@ -155,7 +155,7 @@ int main()
 		}
 		else if (userAction == "d") cout << "-- deleting file --\n" << endl;
 		else if (userAction == "m") cout << "-- menu --\n" << endl;
-		else if (userAction == "e" || goToAction == "e") break;
+		else if (userAction == "q" || goToAction == "q") break;
 		else cout << "-- pressed " << userAction << " --\n" << endl;
 	}
 	cout << "Catch ya later buddy!" << endl;
