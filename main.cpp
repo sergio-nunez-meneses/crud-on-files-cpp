@@ -45,13 +45,21 @@ void readFile(fstream &file, string &fileContent)
 	file.close();
 }
 
-void editFile(fstream &file, string &fileContent)
+void editFile(fstream &file, const string &filePath, string &fileContent)
 {
+	string fileName = fs::path(filePath).filename().string();
+
+	cout << "\nTo add content, type whatever you want, and press enter to save and continue." << endl;
+	cout << "To stop, type exit and press enter." << endl;
+
+	cout << "\n----- Editing file " << fileName << " -----" << endl;
 	while (getline(cin, fileContent))
 	{
 		if (fileContent != "exit") file << fileContent << endl;
 		else break;
 	}
+	cout << "----- End editing file -----" << endl;
+
 	file.close();
 	file.flush();
 }
@@ -124,14 +132,7 @@ int main()
 
 			if (file.is_open())
 			{
-				string fileName = fs::path(filePath).filename().string();
-
-				cout << "\nTo add content, type whatever you want, and press enter to save and continue." << endl;
-				cout << "To stop, type exit and press enter." << endl;
-
-				cout << "\n----- Editing file " << fileName << " -----" << endl;
-				editFile(file, fileContent);
-				cout << "----- End editing file -----" << endl;
+				editFile(file, filePath, fileContent);
 
 				cout << "\nWhat would you like to do now?" << endl;
 				cout << "\t\t[c] Create a file" << endl;
