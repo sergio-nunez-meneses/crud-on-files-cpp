@@ -22,7 +22,10 @@ vector<string> getStoredFiles(const string &path)
 
 void displayStoredFiles(const vector<string> &files, const string &userAction = "", const string &goToAction = "")
 {
-	string action = (userAction == "r" || goToAction == "r") ? "read" : "update";
+	string action;
+	if (userAction == "r" || goToAction == "r") action = "read";
+	else if (userAction == "u" || goToAction == "u") action = "update";
+	else action = "delete";
 
 	cout << "\nWhich file would you like to " << action << "? Type a number and press enter:" << endl;
 	for (int i = 0; i < files.size(); ++i) cout << "\t\t[" << i + 1 << "] " << files[i] << endl;
@@ -30,9 +33,7 @@ void displayStoredFiles(const vector<string> &files, const string &userAction = 
 
 void displayActionMenu(const vector<string> &files, const string &action = "")
 {
-	string title = (action.empty())
-	               ? "Howdy, what would you like to do?"
-	               : "\nWhat would you like to do now?";
+	string title = (action.empty()) ? "Howdy, what would you like to do?" : "\nWhat would you like to do now?";
 
 	cout << title << " Type a character and press enter:" << endl;
 	cout << "\t\t[c] Create a file" << endl;
@@ -108,6 +109,8 @@ int main()
 	string filePath, fileContent, userAction, goToAction;
 	fstream file;
 
+	bool fromAction = false;
+
 	displayActionMenu(files);
 
 	while (getline(cin, userAction))
@@ -122,7 +125,9 @@ int main()
 			checkFileNameExtension(fileName);
 
 			filePath = fileDirPath + "/" + fileName;
+
 			goToAction = "u";
+			fromAction = true;
 		}
 		else if (userAction == "r" || goToAction == "r")
 		{
@@ -141,11 +146,24 @@ int main()
 				displayActionMenu(getStoredFiles(fileDirPath), "r");
 
 				cin >> goToAction;
+
+				fromAction = false;
 			}
 			else cout << "Unable to open file" << endl;
 		}
 		else if (userAction == "u" || goToAction == "u" || userAction == "d" || goToAction == "d")
 		{
+			if (!fromAction)
+			{
+				files = getStoredFiles(fileDirPath);
+				displayStoredFiles(files, userAction, goToAction);
+
+				int fileIndex;
+				cin >> fileIndex;
+
+				filePath = files[fileIndex - 1];
+			}
+
 			file.open(filePath, ios::out | ios::app);
 
 			if (file.is_open())
@@ -156,18 +174,9 @@ int main()
 				displayActionMenu(getStoredFiles(fileDirPath), "u");
 
 				cin >> goToAction;
+				fromAction = false;
 			}
-			else
-			{
-				files = getStoredFiles(fileDirPath);
-				displayStoredFiles(files, userAction, goToAction);
-
-				int fileIndex;
-				cin >> fileIndex;
-
-				filePath = files[fileIndex - 1];
-				goToAction = userAction;
-			}
+			else cout << "Unable to update file" << endl;
 		}
 		else if (userAction == "q" || goToAction == "q") break;
 		else cout << "-- pressed " << userAction << " --\n" << endl;
@@ -176,4 +185,3 @@ int main()
 
 	return 0;
 }
-
