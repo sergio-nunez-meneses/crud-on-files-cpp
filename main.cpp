@@ -46,20 +46,26 @@ void displayActionMenu(const vector<string> &files, const string &action = "")
 	cout << "\t\t[q] Quit" << endl;
 }
 
-void checkFileNameExtension(string &fileName)
+string setFileName(const string &fileName)
 {
-	if (fileName.find('.') == string::npos) fileName = fileName + ".txt";
+	const bool isFilePath = fs::exists(fileName);
+
+	if (isFilePath) return fs::path(fileName).filename().string();
 	else
 	{
-		size_t needle = fileName.find_last_of('.'); // unsigned integer type of the result of the sizeof operator
+		if (fileName.find('.') == string::npos) return fileName + ".txt";
+		else
+		{
+			size_t needle = fileName.find_last_of('.'); // unsigned integer type of the result of the sizeof operator
 
-		if (fileName.substr(needle + 1) != "txt") fileName = fileName.substr(0, needle) + ".txt";
+			if (fileName.substr(needle + 1) != "txt") return fileName.substr(0, needle) + ".txt";
+		}
 	}
 }
 
 void readFile(fstream &file, const string &filePath, string &fileContent)
 {
-	string fileName = fs::path(filePath).filename().string();
+	string fileName = setFileName(filePath);
 
 	cout << "\n----- Reading file " << fileName << " -----" << endl;
 	while (getline(file, fileContent)) cout << fileContent << endl;
@@ -70,7 +76,7 @@ void readFile(fstream &file, const string &filePath, string &fileContent)
 
 void editFile(fstream &file, const string &filePath, string &fileContent)
 {
-	string fileName = fs::path(filePath).filename().string();
+	string fileName = setFileName(filePath);
 
 	cout << "\nTo add content, type whatever you want, and press enter to save and continue." << endl;
 	cout << "To stop, type exit and press enter." << endl;
@@ -119,12 +125,11 @@ int main()
 		{
 			cout << "\nType the file name:" << endl;
 
-			string fileName;
+			string fileNameWithoutPath, fileName;
 			cin >> fileName;
 
-			checkFileNameExtension(fileName);
-
-			filePath = fileDirPath + "/" + fileName;
+			fileNameWithoutPath = setFileName(fileName);
+			filePath = fileDirPath + "/" + fileNameWithoutPath;
 
 			goToAction = "u";
 			fromAction = true;
