@@ -59,8 +59,10 @@ string setFileName(const string &fileName)
 			size_t needle = fileName.find_last_of('.'); // unsigned integer type of the result of the sizeof operator
 
 			if (fileName.substr(needle + 1) != "txt") return fileName.substr(0, needle) + ".txt";
+			else return fileName;
 		}
 	}
+	// TODO: Return random file name
 }
 
 void readFile(fstream &file, const string &filePath, string &fileContent)
