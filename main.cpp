@@ -14,7 +14,7 @@ string getCurrentProjectPath()
 
 vector<string> getStoredFiles(const string &path)
 {
-	vector<string> files;
+	vector<string>  files;
 	for (const auto &entry: fs::directory_iterator(path)) files.push_back(entry.path().string());
 
 	return files;
@@ -106,16 +106,15 @@ void deleteFile(const string &filePath)
 
 int main()
 {
-	string cwd = getCurrentProjectPath();
+	string cwd         = getCurrentProjectPath();
 	string fileDirPath = cwd + "/created-files";
 
 	if (!fs::is_directory(fileDirPath)) fs::create_directory(fileDirPath);
 
-	vector<string> files = getStoredFiles(fileDirPath);
-	string filePath, fileContent, userAction, goToAction;
-	fstream file;
-
-	bool fromAction = false;
+	vector<string> files      = getStoredFiles(fileDirPath);
+	bool           fromAction = false;
+	string         filePath, fileContent, userAction, goToAction;
+	fstream        file;
 
 	displayActionMenu(files);
 
@@ -129,7 +128,7 @@ int main()
 			cin >> fileName;
 
 			fileNameWithoutPath = setFileName(fileName);
-			filePath = fileDirPath + "/" + fileNameWithoutPath;
+			filePath            = fileDirPath + "/" + fileNameWithoutPath;
 
 			goToAction = "u";
 			fromAction = true;
